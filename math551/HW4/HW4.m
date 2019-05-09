@@ -1,0 +1,10 @@
+a=(-2+0.04^2)*ones(1,25)
+b=ones(1,24)
+c=ones(1,24)
+f=0.04^3*(1:25)
+u_approx=trisolve(a,b,c,f).'
+x=0.04*(1:25)
+u_exact=exp(1)/(exp(1)^2-1)*(exp(x)-exp(-x))-x
+plot(x,u_approx,'-o',x,u_exact)
+legend('u_a_p_p_r_o_x','u_e_x_a_c_t')
+norm(u_exact-u_approx)
