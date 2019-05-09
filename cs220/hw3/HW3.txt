@@ -1,0 +1,102 @@
+object Homework3
+{	import edu.umass.cs.CSV
+
+	val ssaBirths=CSV.fromFile("ssa-births.csv")
+	val lifeExpectancy=CSV.fromFile("cdc-life-expectancy.csv")
+
+	def yearIs(data:List[List[String]],n:Int):List[List[String]]=
+	{	data.filter(x=>Integer.parseInt(x(0))==n)
+	}
+	def yearGT(data:List[List[String]],bound:Int):List[List[String]]=
+	{	data.filter(x=>Integer.parseInt(x(0))>bound)
+	}
+	def yearLT(data:List[List[String]],bound:Int):List[List[String]]=
+	{	data.filter(x=>Integer.parseInt(x(0))<bound)
+	}
+
+	def onlyName(data:List[List[String]],name:String):List[List[String]]=data.filter(x=>x(1)==name)
+	def onlyGender(data:List[List[String]],gender:String):List[List[String]]=data.filter(x=>x(2)==gender)
+
+	def mostPopular(data:List[List[String]]):(String,Int)=data match
+	{	case Nil=>("",0)
+		case head::tail=>mostPopularHelper(tail,head)
+	}
+	def mostPopularHelper(data:List[List[String]],acc:List[String]):(String,Int)=data match
+	{	case Nil=>(acc(1),Integer.parseInt(acc(3)))
+		case head::tail=>
+		{	if(Integer.parseInt(head(3))>Integer.parseInt(acc(3)))
+				mostPopularHelper(tail,head)
+			else
+				mostPopularHelper(tail,acc)
+		}
+	}
+
+	def count(data:List[List[String]]):Int=countHelper(data.map(x=>x(3)))
+	def countHelper(data:List[String]):Int=data match
+	{	case Nil=>0
+		case head::tail=>Integer.parseInt(data(0))+countHelper(tail)
+	}
+
+	def countGirlsAndBoys(data:List[List[String]]):(Int,Int)=(count(data.filter(x=>x(2)=="F")),count(data.filter(x=>x(2)=="M")))
+	
+	def unisexNames(data:List[List[String]]):Set[String]=
+	{	unisexNamesHelper(onlyGender(data,"F").map(x=>x(1)),onlyGender(data,"M").map(x=>x(1)))
+	}
+	def unisexNamesHelper(fNames:List[String],mNames:List[String]):Set[String]=fNames match
+	{	case Nil=>Set()
+		case head::tail=>
+		{	if(mNames.contains(head))
+				Set(head)|unisexNamesHelper(tail,mNames)
+			else
+				unisexNamesHelper(tail,mNames)
+		}
+	}
+
+	def expectedAlive(gender:String,birthYear:Int,currentYear:Int):Boolean=
+	{	val lEM=lifeExpectancy.filter(x=>Integer.parseInt(x(0))==birthYear).map(x=>x(1))
+		val lEF=lifeExpectancy.filter(x=>Integer.parseInt(x(0))==birthYear).map(x=>x(2))
+		gender match
+		{	case "M"=>
+			{	if(currentYear>(birthYear+Integer.parseInt(lEM(0)))||currentYear<birthYear)
+					false
+				else
+					true		
+			}
+			case "F"=>
+			{	if(currentYear>(birthYear+Integer.parseInt(lEF(0)))||currentYear<birthYear)
+					false
+				else
+					true
+			}
+		}
+	}
+
+	def estimatePopulation(data:List[List[String]],year:Int):Int=
+	{	val dataBorn=yearLT(data,year)
+		estimatePopulationHelper(dataBorn,year)
+	}
+	def estimatePopulationHelper(data:List[List[String]],year:Int):Int=data match
+	{	case Nil=>0
+		case head::tail=>
+		{	if(head(2)=="M")
+				estimateMalePopulation(head,year)+estimatePopulationHelper(tail,year)
+			else if(head(2)=="F")
+				estimateFemalePopulation(head,year)+estimatePopulationHelper(tail,year)
+			else
+				throw new Exception("Non-traditional gender")
+		}
+	}
+	def estimateMalePopulation(data:List[String],year:Int):Int=
+	{	if(expectedAlive("M",Integer.parseInt(data(0)),year))
+			Integer.parseInt(data(3))
+		else
+			0
+	}
+	def estimateFemalePopulation(data:List[String],year:Int):Int=
+	{	if(expectedAlive("F",Integer.parseInt(data(0)),year))
+			Integer.parseInt(data(3))
+		else
+			0
+	}
+				
+}

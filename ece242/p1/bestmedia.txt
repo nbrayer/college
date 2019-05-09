@@ -1,0 +1,64 @@
+Movie
+2001: A Space Odyssey
+TU2RL012
+11.99
+Stanley Kubrick
+Keir Dullea
+
+Book
+Data Structure and Algorithms
+UI7P3J6Y
+32.49
+Robert Lafore
+
+Movie
+Stars Wars: Episode IV
+R2D2C3P0
+13.83
+Georges Lucas
+Mark Hamill
+
+Book
+The Alchemist
+TR3FL0EW
+3.99
+Paulo Coelho
+
+Movie
+The Good, The Bad and The Ugly
+PO5T7Y89
+9.99
+Sergio Leone
+Clint Eastwood
+
+Book
+A Brief History of Time
+GV5N32M9
+10.17
+Stephen Hawking
+
+Movie
+Gone with the Wind
+2FG6B3N9
+9.99
+Victor Fleming
+Vivien Leigh
+
+Book
+Gone with the Wind
+6Y9OPL87
+7.99
+Margarett Mitchell
+
+Book
+Thus Spoke Zarathustra
+F2O9PIE9
+6.97
+Friedrich Nietzsche
+
+Movie
+North by Northwest
+1DB6HK3L
+8.99
+Alfred Hitchcock
+Cary Grant

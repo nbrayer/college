@@ -1,0 +1,80 @@
+object Homework2
+{	def map2[A,B,C](f:(A,B)=>C,lst1:List[A],lst2:List[B]):List[C]=lst1 match
+	{	case Nil=>Nil
+		case h1::tail1=>
+		{	lst2 match
+			{	case Nil=>Nil
+				case h2::tail2=>f(h1,h2)::map2(f,tail1,tail2)
+			}
+		}
+	}
+	def add(a:Int,b:Int):Int=a+b
+	
+	def zip[A,B](lst1:List[A],lst2:List[B]):List[(A,B)]=lst1 match
+	{	case Nil=>Nil
+		case h1::tail1=>
+		{	lst2 match
+			{	case Nil=>Nil
+				case h2::tail2=>(h1,h2)::zip[A,B](tail1,tail2)
+			}
+		}
+	}
+
+	def concat[A](lst1:List[A],lst2:List[A]):List[A]=lst1 match
+	{	case Nil=>lst2
+		case h::tail=>h::concat(tail,lst2)
+	}
+	def flatten[A](lst:List[List[A]]):List[A]=lst match
+	{	case Nil=>Nil
+		case h::tail=>concat(h,flatten(tail))
+	}
+	def flatten3[A](lst:List[List[List[A]]]):List[A]=lst match
+	{	case Nil=>Nil
+		case h::tail=>flatten(concat(h,flatten(tail)))
+	}
+
+	def buildList[A](length:Int,f:Int=>A):List[A]=length match
+	{	case _ => buildListHelper[A](length,f,0)
+	}
+	def buildListHelper[A](length:Int,f:Int=>A,index:Int):List[A]=
+	{	if((index<length)&&(length>0))
+			f(index)::buildListHelper[A](length,f,index+1)
+		else
+			Nil
+	}
+
+	def mapList[A,B](lst:List[A],f:A=>List[B]):List[B]=lst match
+	{	case Nil=>Nil
+		case h::tail=>concat(f(h),mapList(tail,f))
+	}
+	def f(n:Int):List[Int]=buildList(n,(_:Int)=>n)
+
+	def partition[A](f:A=>Boolean,lst:List[A]):(List[A],List[A])=lst match
+	{	case Nil=>(Nil,Nil)
+		case h::tail=>
+		{	if(f(h))
+				((h::partitionHelper1(f,tail)),partitionHelper2(f,tail))
+			else
+				(partitionHelper1(f,tail),(h::partitionHelper2(f,tail)))
+		}
+	}
+	def partitionHelper1[A](f:A=>Boolean,lst:List[A]):List[A]=lst match
+	{	case Nil=>Nil
+		case h::tail=>
+		{	if(f(h))
+				h::partitionHelper1(f,tail)
+			else
+				partitionHelper1(f,tail)
+		}
+	}
+	def partitionHelper2[A](f:A=>Boolean,lst:List[A]):List[A]=lst match
+	{	case Nil=>Nil
+		case h::tail=>
+		{	if(f(h))
+				partitionHelper2(f,tail)
+			else
+				h::partitionHelper2(f,tail)
+		}
+	}
+	def isEven(n:Int):Boolean=n%2==0
+}
