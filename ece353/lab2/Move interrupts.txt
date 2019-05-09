@@ -1,0 +1,4 @@
+void Move_interrupts(void)
+{	GICR=(1<<IVCE);		// enable change of interrupt vectors
+	GICR=(1<<IVSEL);	// move interrupts to boot flash section
+}

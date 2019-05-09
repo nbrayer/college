@@ -1,0 +1,11 @@
+void TIM16_writeTCNT1(unsigned int timer)
+{	unsigned char sreg;
+	
+	sreg=SREG;	// save global interrupt flag
+	_CLI();		// disable interrupts
+	
+	TCNT1=timer;	// set TCNT1 to timer
+
+	SREG=sreg;	// restore global interrupt flag
+}
+/* Writing to any OCR1A/B or ICR1 Registers can be done similarly */

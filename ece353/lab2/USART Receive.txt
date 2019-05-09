@@ -1,0 +1,5 @@
+unsigned char USART_read(void)
+{	while(!(UCSRA&(1<<RXC)))
+	;	// wait for data to be received
+	return(UDR);	// get and return received data from buffer
+}

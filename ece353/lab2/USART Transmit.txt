@@ -1,0 +1,5 @@
+void USART_write(unsigned char data)
+{	while(!(UCSRA&(1<<UDRE)))
+	;	// wait for empty transmit buffer
+	UDR=data;	// put data into buffer, sends the data
+}

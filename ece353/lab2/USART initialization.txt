@@ -1,0 +1,8 @@
+void USART_Init(unsigned int baud)
+{	UBRRH=(unsigned char)(baud>>8);	// set baud rate
+	UBRRL=(unsigned char)baud;	// set baud rate
+
+	UCSRB=(1<<RXEN)|(1<<TXEN);	// enable receiver and transmitter
+
+	UCSRC=(1<<URSEL)|(1<<USBS)|(3<<UCSZ0);	// set frame format: 8data, 2stop bit
+}

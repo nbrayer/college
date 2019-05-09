@@ -1,0 +1,10 @@
+void EEPROM_write(unsigned int uiAddress,unsigned char ucData)
+{	while(EECR&(1<<EEWE))	// wait for completion of previous write
+	;
+	EEAR=uiAddress;	// set up address
+	EEDR=ucData;	// and data registers
+
+	EECR|=(1<<EEMWE);	// write logical one to EEMWE
+	
+	EECR|=(1<<EEWE);	// start eeprom write by setting EEWE
+}

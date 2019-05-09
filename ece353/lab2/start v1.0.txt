@@ -1,0 +1,55 @@
+#include <avr/io.h>
+#include <avr/delay.h>
+#include <avr/iom32.h>
+
+unsigned char EEPROM_read(unsigned int);
+void EEPROM_write(unsigned int,unsigned char);
+unsigned char USART_read(void);
+void USART_write(unsigned char);
+
+int main(void)
+{
+
+	while(1)
+	{	if(recording)
+		{	if(storage_full);
+				exit();
+			USART_read();
+			EEPROM_write();	
+		}
+		if(playing)
+		{	EEPROM_read();
+			if(modifying)
+			{
+			}
+			USART_write();
+		}
+	}
+}
+
+unsigned char EEPROM_read(unsigned int uiAddress)
+{	while(EECR&(1<<EEWE))	// wait for completion of previous write
+	EEAR=uiAddress;		// set up address register
+	EECR|=(1<<EERE); 	// start eeprom read by writing EERE
+	return(EEDR);		// return data from data register
+}
+void EEPROM_write(unsigned int uiAddress,unsigned char ucData)
+{	while(EECR&(1<<EEWE))	// wait for completion of previous write
+	;
+	EEAR=uiAddress;		// set up address
+	EEDR=ucData;		// and data registers
+	EECR|=(1<<EEMWE);	// write logical one to EEMWE
+	EECR|=(1<<EEWE);	// start eeprom write by setting EEWE
+}
+unsigned char USART_read(void)
+{	while(!(UCSRA&(1<<RXC)))
+	;			// wait for data to be received
+	return(UDR);		// get and return received data from buffer
+}
+void USART_write(unsigned char data)
+{	while(!(UCSRA&(1<<UDRE)))
+	;			// wait for empty transmit buffer
+	UDR=data;		// put data into buffer, sends the data
+}
+
+

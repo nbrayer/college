@@ -1,0 +1,9 @@
+unsigned int timer;
+
+...
+
+TCNT1=0x1FF;
+timer=TCNT1;
+
+...
+

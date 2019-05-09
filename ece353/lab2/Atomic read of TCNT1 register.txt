@@ -1,0 +1,14 @@
+unsigned int TIM16_ReadTCNT1(void)
+{	unsigned char sreg;
+	unsigned int timer;
+
+	sreg=SREG;	// save global interrupt flag
+
+	_CLI();	// disable interrupts
+
+	timer=TCNT1;	// read TCNT1 into timer
+
+	SREG=sreg;	// restore global interrupt flag
+	return(timer);
+}
+/* reading of any OCR1A/B or ICR1 Registers can be done in the same manner */

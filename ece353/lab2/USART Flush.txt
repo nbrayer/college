@@ -1,0 +1,5 @@
+void USART_Flush(void)
+{	unsigned char dummy;
+	while(UCSRA&(1<<RXC))
+		dummy=UDR;
+}
